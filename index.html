@@ -48,7 +48,7 @@
     
     .dataItem {
     	height: 80px;
-    	width: 16.667%;
+    	width: 25%;
     	float: left;
     	font-size: x-small;
     	text-align: center;
@@ -59,12 +59,32 @@
     .dataItem span {
     	font-size: 35px;
     }
+    
+    #menu li a {
+    	font-weight: bold;
+	}
+    
+    #loadingDiv {
+		top: 20%;
+    	position: relative;
+    	text-align: center;
+	}
+	
+	#loadingDiv img{
+		display: block;
+		margin: 0 auto;
+	}
 }
   </style>
   </head>
 <!-- NAVBAR
 ================================================== -->
-  <body onload="init()">
+  <body>
+  <div id="loadingDiv">
+  		<img class=".img-responsive" src="images/aidr_logo.png" alt="500x500" style="height: 150px;"><br>
+  		<img class=".img-responsive" src="images/loading_spinner.gif" alt="500x500" style="height: 180px;">
+  </div>
+  <div id="pageContent" style="display: none;">
     <div class="navbar-wrapper">
       <div class="container">
 
@@ -80,11 +100,11 @@
               <img class="navbar-brand" src="images/aidr_logo.png" alt="500x500" style="padding-top: 0px; height: 70px; padding-bottom: 0px;">
             </div>
             <div id="navbar" class="navbar-collapse collapse navbar-right">
-              <ul class="nav navbar-nav" style="margin: 10px;">
+              <ul id="menu" class="nav navbar-nav" style="margin: 10px;">
                 <li><a href="http://aidr.qcri.org/r/science" target="_blank">Science</a></li>
                 <li><a href="http://aidr.data.qcri.org" target="_blank">Data</a></li>
                 <li><a href="http://clickers.micromappers.org" target="_blank">Micromappers</a></li>
-                <li><a href="#">Login</a></li>
+                <li><a href="http://aidr-prod.qcri.org/AIDRFetchManager/index.jsp">Login</a></li>
               </ul>
             </div>
           </div>
@@ -100,12 +120,12 @@
       <!-- Indicators -->
         <table class="hidden-xs hidden-sm data" id="data">
 	          <tr> 
-	            <td class="dataItem text-muted"><span>998</span><br>TOTAL COLLECTIONS</td>
-	            <td class="dataItem text-muted"><span>22</span><br>RUNNING</td>
-	            <td class="dataItem text-muted"><span>37,082</span><br>TOTAL TWEETS</td>
-	            <td class="dataItem text-danger"><span>966</span><br>COLLECTION OFFLINE</td>
-	            <td class="dataItem text-muted"><span>2</span><span style="font-size: small; color: #ccc;">m</span> <span style="font-size: 35px;">16</span><span style="font-size: small; color: #ccc;">s</span><br>DOWNTIME</td>
-	            <td class="dataItem text-primary"><span>99%</span><br>AVG. UPTIME</td>
+	            <td class="dataItem text-muted"><span id="totalCollections"></span><br>TOTAL COLLECTIONS</td>
+	            <td class="dataItem text-muted"><span id="runningCollections"></span><br>RUNNING</td>
+	            <td class="dataItem text-muted"><span id="totalTweets"></span><br>TOTAL TWEETS</td>
+	            <td class="dataItem text-danger"><span id="offlineCollections"></span><br>COLLECTION OFFLINE</td>
+	            <!-- <td class="dataItem text-muted"><span>2</span><span style="font-size: small; color: #ccc;">m</span> <span style="font-size: 35px;">16</span><span style="font-size: small; color: #ccc;">s</span><br>DOWNTIME</td>
+	            <td class="dataItem text-primary"><span>99%</span><br>AVG. UPTIME</td> -->
 	          </tr>
         </table>
     </div><!-- /.carousel -->
@@ -170,14 +190,13 @@
 	      	<h1>OUR PARTNERS</h1>
 	      </div>
         <div class="col-lg-4">
-          <a href="http://qcri.com/" target="_blank"><img src="images/qcri_logo.png" alt="500x500" width="380" height="140"></a>
+          <a href="http://qcri.com/" target="_blank"><img src="images/qcri_logo.png" alt="500x500" width="250" height="140"></a>
           <h2>Qatar Computing Research Institute</h2>
           <p class="partnersDetails">
            Qatar Computing Research Institute (QCRI) is a national research institute, 
            established in 2010 by Qatar Foundation for Education, Science and Community Development,
            a private, non-profit organization that is supporting Qatar’s transformation from 
-           carbon economy to knowledge economy. QCRI operates under the umbrella 
-           of Hamad bin Khalifa University.
+           carbon economy to knowledge economy.
            </p>
           <p>
           	<a class="btn btn-default" href="http://qcri.com/" target="_blank" role="button">View details &raquo;</a>
@@ -262,6 +281,7 @@
       </footer>
 
     </div><!-- /.container -->
+   </div>
 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -282,13 +302,6 @@
 		        $('.home-fullscreen').css('height', windowHeight);
 		    }
 		}
-
-		//Initialization
-		$(window).load(function () {
-		    
-		    homeFullScreen();
-		});
-
 
 		//What happen on window resize
 		$(window).resize(function () {
@@ -324,6 +337,32 @@
 			        //log the error
 			      }); 
 		}
+		
+		$(window).load(function() {
+			homeFullScreen();
+			$.ajax({ 
+					dataType: "jsonp",
+                    jsonpCallback:"jsonp",
+					url: "http://aidr-dev.qcri.org/AIDRFetchManager/public/collection/getTweetCounts",
+			        success: function(data){
+			        	var total_collections = (data.data.total_collection).toLocaleString();
+			        	var running_collections = (data.data.total_running).toLocaleString();
+			        	var total_tweets = (data.data.total_tweets).toLocaleString();
+			        	var offline_collections = (data.data.total_offline).toLocaleString();
+			        	
+			        	$("#totalCollections").text(total_collections);
+			        	$("#runningCollections").text(running_collections);
+			        	$("#totalTweets").text(total_tweets);
+			        	$("#offlineCollections").text(offline_collections);
+			        	
+			           	$("#pageContent").show();
+			           	init();
+			           	$("#loadingDiv").hide();
+			        },
+					error: function(data){
+					}
+				});
+			});
 	</script>
   </body>
 </html>
