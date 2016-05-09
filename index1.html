@@ -11,82 +11,94 @@
 
     <title>AIDR: Artificial Intelligence for Disaster Response</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/carousel.css" rel="stylesheet">
-	<link rel="stylesheet" href="http://libs.cartodb.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
-	
+	  <link href="css/carousel.css" rel="stylesheet">
+	  <link rel="stylesheet" href="http://libs.cartodb.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
    <!--  <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
-     
+
   <!--[if lte IE 8]>
     <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v2/themes/css/cartodb.ie.css" />
   <![endif]-->
 	 <style>
 		    html, body {
-		    	width:100%; 
-		    	height:100%; 
-		    	padding: 0; 
+		    	width:100%;
+		    	height:100%;
+		    	padding: 0;
 		    	margin: 0;
 		    }
-		    #map { 
-		    	width: 100%; 
-		    	height:100%; 
+		    #map {
+		    	width: 100%;
+		    	height:100%;
 		    	background: white;
 		    }
-		    
+
 		    .data {
-		    	height:80px; 
-		    	width:60%; 
-		    	z-index: 100; 
-		    	background-color: white; 
-		    	position: absolute; 
-		    	margin-left: 20%; 
-		    	margin-right: 20%; 
-		    	bottom: 0%; 
-		    	padding-left: 2.5%; 
+		    	height:80px;
+		    	width:60%;
+		    	z-index: 100;
+		    	//background-color: white;
+		    	position: absolute;
+		    	margin-left: 20%;
+		    	margin-right: 20%;
+		    	bottom: 0%;
+		    	padding-left: 2.5%;
 		    	//box-shadow: 0 2px 2px 3px rgba(0, 0, 0, 0.15);
 		    }
-		    
+
 		    .dataItem {
 		    	height: 80px;
 		    	width: 25%;
 		    	float: left;
 		    	font-size: x-small;
 		    	text-align: center;
-		    	border: 1px solid rgba(238, 238, 238, 0.47);
+		    	//border: 1px solid rgba(238, 238, 238, 0.47);
+          border: none;
+          color: white;
 		    	font-weight: 100;
 		    }
-		    
+
 		    .dataItem span {
 		    	font-size: 35px;
 		    }
-		    
+
 		    #menu li a {
 		    	background: none;
 		    	color: white;
 		    	font-weight: bold;
 			}
-			
+
 			#menu li:hover a {
 				background: none;
-		    	color: yellow;
+		    	color: #f2911e;
 			}
-			
+
 			#menu li:active a {
 				background: none;
 		    	color: white;
 			}
-			
+
 			#loadingDiv {
 				top: 20%;
 		    	position: relative;
 		    	text-align: center;
 			}
-			
+
 			#loadingDiv img {
 				display: block;
 				margin: 0 auto;
 			}
-	
+      .navbar-wrapper {
+        margin-top: 0px;
+      }
+
+      #offlineCollections {
+        color: red;
+      }
+      .leaflet-control-attribution{
+        display: none;
+      }
+
 	  </style>
   </head>
 <!-- NAVBAR
@@ -99,7 +111,7 @@
 	  <div id="pageContent" style="display: none;">
 	    <div class="navbar-wrapper">
 	      <div class="container">
-	
+
 	        <nav class="navbar navbar-static-top">
 	          <div class="container">
 	            <div class="navbar-header">
@@ -113,6 +125,7 @@
 	            </div>
 	            <div id="navbar" class="navbar-collapse collapse navbar-right">
 	              <ul id="menu" class="nav navbar-nav" style="margin: 10px;">
+                  <li><a href="http://micromappers.org/" target="_blank">Blog</a></li>
 	                <li><a href="http://aidr.qcri.org/r/science" target="_blank">Science</a></li>
 	                <li><a href="http://aidr.data.qcri.org" target="_blank">Data</a></li>
 	                <li><a href="http://clickers.micromappers.org" target="_blank">Micromappers</a></li>
@@ -121,17 +134,17 @@
 	            </div>
 	          </div>
 	        </nav>
-	
+
 	      </div>
 	    </div>
-	
-	
+
+
 	    <!-- Map
 	    ================================================== -->
 	    <div id="map" class="carousel slide home home-fullscreen" data-ride="carousel">
 	      <!-- Indicators -->
 	        <table class="hidden-xs hidden-sm data" id="data">
-		          <tr> 
+		          <tr>
 		            <td class="dataItem text-muted"><span id="totalCollections"></span><br>TOTAL COLLECTIONS</td>
 		            <td class="dataItem text-muted"><span id="runningCollections"></span><br>RUNNING</td>
 		            <td class="dataItem text-muted"><span id="totalTweets"></span><br>TOTAL TWEETS</td>
@@ -141,12 +154,12 @@
 		          </tr>
 	        </table>
 	    </div><!-- /.carousel -->
-	
-	
+
+
 	    <!-- Marketing messaging and featurettes
 	    ================================================== -->
 	    <!-- Wrap the rest of the page in another container to center all the content. -->
-	
+
 	    <div class="container marketing">
 	      <!-- START THE FEATURETTES -->
 	      <div class="row featurette">
@@ -163,30 +176,30 @@
 				</a>
 	        </div>
 	        <div class="col-md-5">
-	          <img class="featurette-image img-responsive center-block" data-src="" alt="500x500" src="images/aidr_flow.jpg" data-holder-rendered="true" style="height: 400px !important; width: 500px;">
+	          <img class="featurette-image img-responsive center-block" data-src="" alt="500x500" src="images/aidr_logo.png" data-holder-rendered="true" style="height: 320px !important; width: 500px;">
 	        </div>
 	      </div>
-	
+
 	      <hr class="featurette-divider">
-	
+
 	      <div class="row featurette">
 	        <div class="col-md-7 col-md-push-5">
 	          <h2 class="featurette-heading">Micromappers</h2>
-	          <p class="lead">MicroMappers is a joint initiative with the United Nations: 
-	          	humanitarian organizations need your help to make sense of social media 
+	          <p class="lead">MicroMappers is a joint initiative with the United Nations:
+	          	humanitarian organizations need your help to make sense of social media
 	          	generated during disasters.
 	          </p>
 	        </div>
 	        <div class="col-md-5 col-md-pull-7">
-	          <img class="featurette-image img-responsive center-block" data-src="" alt="500x500" src="images/micromaps.jpg" data-holder-rendered="true">
+	          <img class="featurette-image img-responsive center-block" data-src="" alt="500x500" src="images/mm.png" data-holder-rendered="true">
 	        </div>
 	      </div>
-	
+
 	      <hr class="featurette-divider">
-	
+
 	      <!-- /END THE FEATURETTES -->
-	
-	
+
+
 	<!-- Three columns for partners -->
 	      <div class="row">
 		  	<div class="col-lg-12 text-center" style="margin-bottom: 80px;">
@@ -198,52 +211,52 @@
 	          </a>
 	          <h2>Qatar Computing Research Institute</h2>
 	          <p style="text-align: justify;">
-	          	Qatar Computing Research Institute (QCRI) is a national 
-		      	research institute, established in 2010 by Qatar Foundation for Education, Science and 
-		        Community Development, a private, non-profit organization that is supporting Qatar’s 
+	          	Qatar Computing Research Institute (QCRI) is a national
+		      	research institute, established in 2010 by Qatar Foundation for Education, Science and
+		        Community Development, a private, non-profit organization that is supporting Qatar’s
 		        transformation from carbon economy to knowledge economy.
 	          </p>
 	          <p>
 	          	<a class="btn btn-default" href="http://qcri.com/" target="_blank" role="button">View details &raquo;</a>
 	          </p>
 	        </div><!-- /.col-lg-4 -->
-		        
+
 	        <div class="col-lg-4">
 	          <a href="http://www.standbytaskforce.org" target="_blank">
 	          	<img src="images/sbtf_logo.png" alt="500x500" width="360" height="140">
 	          </a>
 	          <h2>StandBy Task Force</h2>
 	          <p style="text-align: justify;">
-	          	The Standby Task Force is a volunteer led and managed network. 
-	          	All Standby Task Force volunteers have equal responsibility for the 
+	          	The Standby Task Force is a volunteer led and managed network.
+	          	All Standby Task Force volunteers have equal responsibility for the
 	          	success of our deployments and our overall mission.
           	  </p>
 	          <p>
 	          	<a class="btn btn-default" href="http://www.standbytaskforce.org" target="_blank" role="button">View details &raquo;</a>
 	          </p>
 	        </div><!-- /.col-lg-4 -->
-		        
+
 	        <div class="col-lg-4">
 	          <a href="http://www.unocha.org" target="_blank">
 	          	<img src="images/un-ocha-logo.png" alt="500x500" width="140" height="140">
 	          </a>
 	          <h2>United Nations Office for the Coordination of Humanitarian Affairs</h2>
 	          <p style="text-align: justify;">
-	          	OCHA is the part of the United Nations Secretariat responsible for bringing 
-	          	together humanitarian actors to ensure a coherent response to emergencies. 
-	          	OCHA also ensures there is a framework within which each actor can contribute 
+	          	OCHA is the part of the United Nations Secretariat responsible for bringing
+	          	together humanitarian actors to ensure a coherent response to emergencies.
+	          	OCHA also ensures there is a framework within which each actor can contribute
 	          	to the overall response effort.
 	          </p>
 	          <p>
 	          	<a class="btn btn-default" href="http://www.unocha.org" target="_blank" role="button">View details &raquo;</a>
 	          </p>
 	        </div><!-- /.col-lg-4 -->
-	        
+
 	      </div><!-- /.row -->
-	      
+
 		  <hr class="featurette-divider">
-		
-		
+
+
 		<!-- five columns for featured in -->
 		  <div class="row">
 	        <div class="col-lg-2 text-center">
@@ -275,7 +288,7 @@
 	         	 </a>
 	        </div><!-- /.col-lg-2 -->
 		  </div><!-- /.row -->
-	      
+
 	      <hr class="featurette-divider">
 	      <!-- FOOTER -->
 	      <footer>
@@ -288,47 +301,45 @@
 	        	<a href="mailto:aidr.qcri@gmail.com" target="_blank">CONTACTS</a>
 	        </p>
 	      </footer>
-	
+
 		</div><!-- /.container -->
 	</div>
 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="http://libs.cartodb.com/cartodb.js/v3/3.15/cartodb.js"></script>
-    
+
     <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
     <!-- <script src="js/holder.min.js"></script> -->
-    
+
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <!-- <script src="js/ie10-viewport-bug-workaround.js"></script> -->
 	<script>
 		function homeFullScreen() {
-	
+
 	    	var homeSection = $('.home');
 	    	var windowHeight = $(window).outerHeight();
 	    	if (homeSection.hasClass('home-fullscreen')) {
-	
 	        	$('.home-fullscreen').css('height', windowHeight);
 	    	}
 		}
-
 
 		//What happen on window resize
 		$(window).resize(function () {
 		    homeFullScreen();
 		});
 
-
 		function init(){
-			      
-			cartodb.createVis('map', 'https://jikimlucas.cartodb.com/api/v2/viz/08064f6a-1095-11e6-81c0-0ecd1babdde5/viz.json', { 
-				time_slider: false
+			cartodb.createVis('map', 'https://jikimlucas.cartodb.com/api/v2/viz/08064f6a-1095-11e6-81c0-0ecd1babdde5/viz.json', {
+				time_slider: false,
+        cartodb_logo: false,
+        infowindow: false
 			});
-		 } 
+		 }
 
 		$(window).load(function() {
 			homeFullScreen();
-			$.ajax({ 
+			$.ajax({
 					dataType: "jsonp",
 		            jsonpCallback:"jsonp",
 					url: "http://aidr-dev.qcri.org/AIDRFetchManager/public/collection/getTweetCounts",
@@ -337,15 +348,15 @@
 			        	var running_collections = (data.data.total_running).toLocaleString();
 			        	var total_tweets = (data.data.total_tweets).toLocaleString();
 			        	var offline_collections = (data.data.total_offline).toLocaleString();
-			        	
+
 			        	$("#totalCollections").text(total_collections);
 			        	$("#runningCollections").text(running_collections);
 			        	$("#totalTweets").text(total_tweets);
 			        	$("#offlineCollections").text(offline_collections);
-			        	
-			           	$("#pageContent").show();
-			           	init();
-			           	$("#loadingDiv").hide();
+
+		           	$("#pageContent").show();
+		           	init();
+		           	$("#loadingDiv").hide();
 			        },
 					error: function(data){
 					}
