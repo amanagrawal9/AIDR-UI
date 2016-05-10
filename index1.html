@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
@@ -13,13 +12,8 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 	  <link href="css/carousel.css" rel="stylesheet">
 	  <link rel="stylesheet" href="http://libs.cartodb.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <link rel="icon" type="image/png" href="images/aidr_favicon.png">
 
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-   <!--  <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet"> -->
-
-  <!--[if lte IE 8]>
-    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v2/themes/css/cartodb.ie.css" />
-  <![endif]-->
 	 <style>
 		    html, body {
 		    	width:100%;
@@ -101,8 +95,8 @@
 
 	  </style>
   </head>
-<!-- NAVBAR
-================================================== -->
+
+<!-- NAVBAR================================================== -->
   <body>
 	  <div id="loadingDiv">
 	  	<img class=".img-responsive" src="images/aidr_logo.png" alt="500x500" style="height: 150px;"><br>
@@ -305,18 +299,12 @@
 		</div><!-- /.container -->
 	</div>
 
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="http://libs.cartodb.com/cartodb.js/v3/3.15/cartodb.js"></script>
-
-    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-    <!-- <script src="js/holder.min.js"></script> -->
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <!-- <script src="js/ie10-viewport-bug-workaround.js"></script> -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="http://libs.cartodb.com/cartodb.js/v3/3.15/cartodb.js"></script>
+  <script src="js/pusher.min.js"></script>
 	<script>
 		function homeFullScreen() {
-
 	    	var homeSection = $('.home');
 	    	var windowHeight = $(window).outerHeight();
 	    	if (homeSection.hasClass('home-fullscreen')) {
@@ -361,6 +349,20 @@
 					error: function(data){
 					}
 				});
+
+        var socket = new Pusher('1eb98c94c2976297709d',{
+           encrypted: true
+         });
+         socket.subscribe('aidr-ui');
+         socket.bind('newTweets',
+           function(data) {
+             $("#totalCollections").text(data.total_collections.toLocaleString());
+             $("#runningCollections").text(data.running_collections.toLocaleString());
+             $("#totalTweets").text(data.total_tweets.toLocaleString());
+             $("#offlineCollections").text(data.offline_collections.toLocaleString());
+           }
+         );
+
 		});
 	</script>
   </body>
